@@ -16,12 +16,16 @@ def splitParagraph( paragraph ):
 
 def splitInWords( sentence ):
     wordList = re.split("[’‘“”%'\",-:¿?¡!\(\)\s\.;«»\*—…\[\]\"\+]+", sentence )
-    wordList = [ x.lower() for x in wordList if x != "" ]
+    wordList = [ clearWord(x.lower()) for x in wordList if x != "" and isWord(x.lower()) ]
     return wordList
 
-def clearWordDEPRECATED( word ):
-    return re.sub( "[’‘“”%'\",-:¿?¡!\(\)\s\.;«»\*—…\[\]\"\+]+", "", word )
-
+def isWord( word ):
+    isWord = True
+    for c in word : 
+        if not c in "abcdefghijklmnopqrstuvwxyzáéíóúñäëïöüàèìòùç-" : 
+            isWord = False
+    return isWord
+    
 def clearWord( word ):
     out = ""
     for c in word : 
