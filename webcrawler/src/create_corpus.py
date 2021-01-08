@@ -13,7 +13,7 @@ from sentences import clearWord
 from common import parseArguments, setupLogger, readConfig, getServer, getDatabaseConnection
 
 def processEntries( db : couchdb.Database, sleepHourList : list ):
-    totalSentences =  [x for x in db.iterview( 'sentences/sentences_not_processed_count', 10 )][0].value
+    totalSentences =  getTotalSentences( db, 'sentences/sentences_not_processed_count' )
     sentenceCount = 1
     for entry in db.iterview( 'sentences/sentences_not_processed', 100 ) :
         waitWhileSleepHour( sleepHourList ) 
@@ -21,14 +21,20 @@ def processEntries( db : couchdb.Database, sleepHourList : list ):
             printProgress( sentenceCount, totalSentences )
         wordSet = { word for word in entry.value["word_list"] if word != "" }
         for word in wordSet:
-            clearedWord = clearWord( word )
-            if clearedWord != "" :
-                updateWordDocument( db, 
-                                    clearedWord, 
-                                    entry.value )
+            updateWordDocument( db, 
+                                word, 
+                                entry.value )
         sentenceCount = sentenceCount + 1
-    print("") # to clear printProgress
-    
+    if sentenceCount >  1 : 
+        print("") # to clear printProgress
+
+def getTotalSentences( db : couchdb.Database, totalSentencesView ):
+    doc = [x for x in db.iterview( totalSentencesView, 10 )]
+    if len(doc) > 0 : 
+        return doc[0].value 
+    else:
+        return 0
+
 def waitWhileSleepHour( sleepHourList : list ):
     now = datetime.datetime.now()
     while now.hour in sleepHourList: 
@@ -72,6 +78,7 @@ if __name__ == '__main__':
     print("Transforming sentences into words....")
     while True : 
         processEntries( db, localConfig['working_hours'] )
+        time.sleep( 30 * 10 * 60 )
     
     print("Finished")
 
