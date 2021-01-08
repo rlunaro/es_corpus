@@ -1,0 +1,9 @@
+#
+# config.yaml - configuration independent of the platform
+#
+# 
+
+
+urlList:
+  - "http://es.wikipedia.org"
+

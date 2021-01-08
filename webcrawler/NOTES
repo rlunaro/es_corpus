@@ -1,0 +1,22 @@
+
+
+Dependencies
+------------
+
+Example of dependency documentation:
+
+    pip install LOQUESEA --proxy "proxytal.glb.mapfre.net:80"
+    
+For use recordset: 
+
+    pip install cx_oracle  --proxy "proxytal.glb.mapfre.net:80"
+
+And decompress the content of the zip file "instantclient_19_5.zip" into
+the "scripts" folder 
+
+IMPORTANT!!! INTO THE SCRIPTS FOLDER!!!
+
+c:\extract-environment\scripts> unzip instantclient_19_5.zip
+
+
+

@@ -1,0 +1,20 @@
+#
+# config_test.yaml - configuration for tests
+#
+#
+
+sentences_and_language : 
+    'es' : 
+        - "Helene Bertha Amelie Riefenstahl, conocida como Leni Riefenstahl (Berlín, 22 de agosto de 1902-Pöcking, 8 de septiembre de 2003), fue una actriz, cineasta y fotógrafa alemana"
+        - "Esta es una lista de la discografía de Thin Lizzy, una banda irlandesa de hard rock formada en Dublín en 1969"
+        - "Esta tabla enlista a países por los ingresos totales tributarios (de todos los niveles de gobierno; i.e., federal, estatal, y local para Estados Unidos) como porcentaje del PIB (Producto Interno Bruto)"
+        - "El origen del Parlacen tuvo lugar el 14 de enero de 1986, durante el discurso de toma de posesión del presidente electo de Guatemala para el período 1986-1990, Marco Vinicio Cerezo Arévalo, formalizando su propuesta a los países del istmo argumentando que dicho organismo fungiría como caja de resonancia política con el fin de analizar entre hermanos centroamericanos las reglas comunes de la convivencia pacífica y desarrollo de la región"
+    'pt' : 
+        - "Skanderborg é um município da Dinamarca, localizado na região central, no condado de Arhus"
+        - "A Flauta Mágica (original em alemão Die Zauberflöte) KV 620 é uma ópera (singspiel) em dois atos de Wolfgang Amadeus Mozart, com libreto alemão de Emanuel Schikaneder"
+        - "O filme é dividido em duas partes: a apresentação da Funerária King Fu e o Inacreditável Velorio de Azevedo Tripé"
+        - "Dom Pedro Mascarenhas, filho de Dom Fernão Martins Mascarenhas, foi alcaide-mor (magistrado) de Trancoso, comendador de Castelo Novo, estribeiro-mor (Superintendente nas cavalariças) de Dom João III, aposentador-mor e camareiro de seu filho, o príncipe Dom João"
+    'cat' : 
+        - "Valencià és la denominació històrica, tradicional i estatutària-oficial que rep al País Valencià, i encara que no és oficial també s'anomena així en la comarca del Carxe de la Regió de Múrcia, la llengua romànica que s'anomena oficialment català a Catalunya, les Illes Balears, la Franja de Ponent, la Catalunya Nord, Andorra i l'Alguer"
+        - "Polly Letofsky l'1 d'agost de 1999, va deixar la seva llar a Vail, Colorado, i es va dirigir cap a l'oest. Va recórrer 4 continents, 22 països i més de 14.000 milles, a peu, per convertir-se en la primera dona que va caminar arreu del món."
+        - "La regió de l'Alta Normandia va ser creada, com les altres regions de la França metropolitana, l'any 1956. Correspon a la part oriental de l'antiga província de Normandia, essent aquesta divisió del territori normand en dues regions, l'Alta i la Baixa Normandia, motiu de força polèmica."
