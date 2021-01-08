@@ -70,7 +70,8 @@ if __name__ == '__main__':
 
     logging.info( "Starting to create new words....")
     print("Transforming sentences into words....")
-    processEntries( db, localConfig['working_hours'] )
+    while True : 
+        processEntries( db, localConfig['working_hours'] )
     
     print("Finished")
 

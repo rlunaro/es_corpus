@@ -19,6 +19,13 @@ def splitInWords( sentence ):
     wordList = [ x.lower() for x in wordList if x != "" ]
     return wordList
 
-def clearWord( word ):
+def clearWordDEPRECATED( word ):
     return re.sub( "[’‘“”%'\",-:¿?¡!\(\)\s\.;«»\*—…\[\]\"\+]+", "", word )
+
+def clearWord( word ):
+    out = ""
+    for c in word : 
+        if c in "abcdefghijklmnopqrstuvwxyzáéíóúñäëïöüàèìòùç-" : 
+            out = out + c
+    return out
 

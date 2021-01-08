@@ -15,6 +15,9 @@ from threading import Thread
 
 class Worker(Thread):
 
+    CONTENT_TYPE = "Content-Type"
+    TEXT_HTML = "text/html"
+    
     def __init__(self, 
                  userAgent,
                  sentenceProcessor, 
@@ -49,10 +52,17 @@ class Worker(Thread):
                                      verify = False, 
                                      timeout = 10, 
                                      headers = headers )
+            if self.CONTENT_TYPE in response.headers : 
+                contentType = response.headers[self.CONTENT_TYPE]
+                logging.info( f"Content type: {contentType}")
+                if self.TEXT_HTML in contentType : 
+                    # only if is html the content will be returned
+                    return response
+            return None
         except Exception as ex : 
             logging.error( f"Exception getting url {url}" )
             logging.error( ex ) 
-        return response
+            return None
                     
     def _getUrlList( self, node ):
         urls_to_visit = []
