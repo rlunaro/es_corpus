@@ -40,6 +40,7 @@ def waitWhileSleepHour( sleepHourList : list ):
     while now.hour in sleepHourList: 
         logging.info( "Sleeping (create_corpus)...")
         time.sleep( 10 * 60 )
+        now = datetime.datetime.now()
 
 def updateWordDocument( db, word, entry ):
     if word[0] == '_' :
@@ -78,6 +79,7 @@ if __name__ == '__main__':
     print("Transforming sentences into words....")
     while True : 
         processEntries( db, localConfig['working_hours'] )
+        logging.info( "create corpus has nothing to do: sleeping for 10 minutes" )
         time.sleep( 30 * 10 * 60 )
     
     print("Finished")

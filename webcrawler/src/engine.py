@@ -51,7 +51,7 @@ class Engine():
         while not now.hour in self.working_hours: 
             logging.info( "Sleeping (webcrawler)...")
             time.sleep( 10 * 60 )
-
+            now = datetime.datetime.now()
         
 
 
