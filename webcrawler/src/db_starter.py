@@ -170,7 +170,12 @@ if __name__ == '__main__':
                         }'''
     addViewToDesignDocument( db, "all_words", "basic_vocab", mapFunction )
 
-
+    mapFunction = '''function (doc) {
+                  if( doc.type == 'word' )
+                    emit(doc.sentences.length, 1);
+                }'''
+    addViewToDesignDocument( db, "all_words", "sentences_length", mapFunction, '_count' )
+    
     mapFunction = '''function (doc) {
                         if( doc.type == 'sentence' )  
                             emit(doc._id, doc);
