@@ -5,7 +5,7 @@ Created on Dec 20, 2020
 '''
 import unittest
 
-from vocab_creator import splitSentenceInWords
+from sentences import splitInWords
 from bs4 import BeautifulSoup
 
 class Test(unittest.TestCase):
@@ -21,8 +21,8 @@ class Test(unittest.TestCase):
 
     def testSplitInWords(self):
         sentence = "— Bien parece—respondió el galeote—"
-        print( splitSentenceInWords( sentence ) )
-        self.assertTrue( splitSentenceInWords( sentence ) == ['', 'bien', 'parece', 'respondió', 'el', 'galeote', '' ] )
+        print( splitInWords( sentence ) )
+        self.assertTrue( splitInWords( sentence ) == [ 'bien', 'parece', 'respondió', 'el', 'galeote' ] )
 
     def complexTest(self):
         html = '''    <p>
@@ -36,7 +36,7 @@ moral de don Ferm&iacute;n.... &iexcl;Je, je!...
             paragraph = ""
             for string in child.stripped_strings: 
                 paragraph = paragraph + " " + string
-        print( splitSentenceInWords( paragraph ) )
+        print( splitInWords( paragraph ) )
         
         
 

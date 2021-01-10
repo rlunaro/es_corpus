@@ -20,3 +20,12 @@ max_jobs : 8
 
 # what user agent the crawler must show on requests
 user_agent: "spanish corpus project"
+
+# where do you want the resulting corpus files
+# will be created??? Every time you run 
+# "corpus_extractor" these files will be 
+# overwritten
+corpus_result_dir : "/home/rluna/tmp"
+
+
+

@@ -9,7 +9,6 @@ import time
 import logging
 import couchdb
 
-from sentences import clearWord
 from common import parseArguments, setupLogger, readConfig, getServer, getDatabaseConnection
 
 def processEntries( db : couchdb.Database, sleepHourList : list ):
@@ -24,6 +23,7 @@ def processEntries( db : couchdb.Database, sleepHourList : list ):
             updateWordDocument( db, 
                                 word, 
                                 entry.value )
+        setSentenceAsVisited( db, entry.id )
         sentenceCount = sentenceCount + 1
     if sentenceCount >  1 : 
         print("") # to clear printProgress
@@ -47,7 +47,8 @@ def updateWordDocument( db, word, entry ):
         return
     if word in db : 
         wordDoc = db[word]
-        wordDoc['sentences'].append( entry['_id'] )
+        if not entry['_id'] in wordDoc['sentences']:
+            wordDoc['sentences'].append( entry['_id'] )
     else: 
         # create the word document with the 
         # first sentence added
@@ -58,6 +59,11 @@ def updateWordDocument( db, word, entry ):
                    'creation-date' : now.isoformat(), 
                    'sentences' : [ entry['_id'] ] }
     db.save( wordDoc )
+
+def setSentenceAsVisited( db: couchdb.Database, sentenceId : str ):
+    sentence = db[sentenceId]
+    sentence['processed'] = True
+    db.save( sentence )
 
 def printProgress( partSize, totalSize, barSize = 40 ):
     progressSize = int((barSize * partSize) / totalSize)
