@@ -14,7 +14,7 @@ The process is relatively simple:
      $ virtualenv es_corpus
      
   1. in the same directory, copy the contents of the **webcrawler** directory
-  1. change the name of the file example_config_local.yaml to config_local.yaml, example_logging.json to example.json 
+  1. change the name of the file example_config_local.yaml to config_local.yaml, example_logging.json to logging.json 
   and example_config.yaml to config.yaml
   1. make the apropiate configurations in those files: file paths, url's to start exploring, couchdb configuration
   
