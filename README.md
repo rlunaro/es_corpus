@@ -128,6 +128,7 @@ hours the extract_words program can work. In this manner, you can safely
 left both programs running indefinitely on the target machine, everyone 
 starting at the scheduled hours and doing its job.
 
+
 *config_local.yaml - max_jobs*
 
 How much jobs the webcrawler will run in paralell. I've put 100 in my setup, and 2 for development. 
