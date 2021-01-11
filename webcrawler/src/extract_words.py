@@ -37,8 +37,8 @@ def getTotalSentences( db : couchdb.Database, totalSentencesView ):
 
 def waitWhileSleepHour( sleepHourList : list ):
     now = datetime.datetime.now()
-    while now.hour in sleepHourList: 
-        logging.info( "Sleeping (create_corpus)...")
+    while not now.hour in sleepHourList: 
+        logging.info( "Sleeping (extract_words)...")
         time.sleep( 10 * 60 )
         now = datetime.datetime.now()
 
@@ -70,7 +70,7 @@ def printProgress( partSize, totalSize, barSize = 40 ):
     print( f"\r[{'#' * progressSize}{' ' * (barSize - progressSize)}]", end = '' )
 
 if __name__ == '__main__':
-    print("create_corpus v.1.0");
+    print("extract_words v.1.0");
     (localConfigFile, 
      configFile, 
     loggingFile) = parseArguments( sys.argv[1:] )
@@ -84,11 +84,9 @@ if __name__ == '__main__':
     logging.info( "Starting to create new words....")
     print("Transforming sentences into words....")
     while True : 
-        processEntries( db, localConfig['working_hours'] )
-        logging.info( "create corpus has nothing to do: sleeping for 10 minutes" )
+        processEntries( db, localConfig['working_hours_extract_words'] )
+        logging.info( "extract_words has nothing to do: sleeping for 10 minutes" )
         time.sleep( 30 * 10 * 60 )
-    
-    print("Finished")
 
 
 
