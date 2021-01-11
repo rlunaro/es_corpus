@@ -119,10 +119,14 @@ and [wikilibros](https://es.wikilibros.org).
 
 Here goes the configuration of your couchdb installation. 
 
-*config_local.yaml - working_hours*
+*config_local.yaml - working_hours / working_hours_extract_words*
 
 The working_hours parameter establishes at what hour the webcrawler would be working crawling web pages. 
-The hours ommited will be used by the extract_words command to get the words out of the sentences. 
+
+On the other hand, the working_hours_extract_words parameter establishes the
+hours the extract_words program can work. In this manner, you can safely
+left both programs running indefinitely on the target machine, everyone 
+starting at the scheduled hours and doing its job.
 
 *config_local.yaml - max_jobs*
 
