@@ -208,7 +208,7 @@ if __name__ == '__main__':
     
     mapFunction = '''function(doc) {
         if( doc.type == 'url' && !doc.visited ) 
-            emit( Math.random(), doc._id )
+            emit( [Math.random() * 100000000,Math.random() * 100000000], doc._id )
     }'''
     createView( db, "urls", "not_visited", mapFunction )
     

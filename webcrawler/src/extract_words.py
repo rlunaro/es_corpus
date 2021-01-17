@@ -55,14 +55,13 @@ def updateWordDocument( db, word, entry ):
         now = datetime.datetime.now()
         wordDoc = { '_id' : word,
                    'type' : 'word',
-                   'subtype' : 'foundation', 
                    'creation-date' : now.isoformat(), 
                    'sentences' : [ entry['_id'] ] }
     db.save( wordDoc )
 
 def setSentenceAsVisited( db: couchdb.Database, sentenceId : str ):
     sentence = db[sentenceId]
-    sentence['processed'] = True
+    sentence['procesed'] = True
     db.save( sentence )
 
 def printProgress( partSize, totalSize, barSize = 40 ):

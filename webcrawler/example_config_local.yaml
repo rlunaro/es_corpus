@@ -23,6 +23,10 @@ working_hours_extract_words : [  0,
 # maximum jobs to run in paralell
 max_jobs : 8
 
+# minimum sentences that a word must be to 
+# appear in the corpus
+sentence_threshold : 3
+
 # what user agent the crawler must show on requests
 user_agent: "spanish corpus project"
 

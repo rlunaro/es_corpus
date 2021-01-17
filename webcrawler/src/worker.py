@@ -13,6 +13,9 @@ from urllib.parse import urljoin, urlparse
 import sentences
 from threading import Thread
 
+class SentenceData(object):
+    pass
+
 class Worker(Thread):
 
     CONTENT_TYPE = "Content-Type"
@@ -32,18 +35,22 @@ class Worker(Thread):
         self.webSiteInfoProvider = webSiteInfoProvider
         self.minimumWordsPerSentence = minimumWordsPerSentence 
         self.url = url
+        self.languageToScan = 'es'
+        self.minimumSentences = 3
         super().__init__()
         
     def run(self):
+        self.urlProcessor.anotateUrlAsVisited( self.url )
         if self.webSiteInfoProvider.canFetchOrWaitErrorSafe( self.url ):
             headers = { 'User-Agent': self.userAgent }
             response = self._safeGet( self.url, headers )
             if response : 
                 htmlDoc = BeautifulSoup( response.content, "html.parser" )
                 newUrls = self._getUrlList( htmlDoc )
-                self._saveUrlList( self.url, newUrls )
-                self._saveParagraphs( self.url, self._getTexts( htmlDoc ) )
-                self.urlProcessor.anotateUrlAsVisited( self.url )
+                paragraphsAnalized = self._paragraphAnalisys( self._getTexts( htmlDoc ) )
+                if self._countLanguageSentences( paragraphsAnalized ) >= self.minimumSentences :
+                    self._saveUrlList( self.url, newUrls )
+                self._saveParagraphs( self.url, paragraphsAnalized)
 
     def _safeGet(self, url, headers ):
         response = None
@@ -82,7 +89,28 @@ class Worker(Thread):
             if text.strip() != "" :
                 texts.append( text )
         return texts
-      
+    
+    def _paragraphAnalisys(self, paragraphList ):
+        result = []
+        for paragraph in paragraphList : 
+            sentenceList = sentences.splitParagraph( paragraph )
+            for sentence in sentenceList: 
+                sentenceData = SentenceData()
+                sentenceData.sentence = sentence
+                sentenceData.wordList = sentences.splitInWords( sentence )
+                sentenceData.detectedLanguage = None
+                if (len( sentenceData.wordList ) >= self.minimumWordsPerSentence ) : 
+                    sentenceData.detectedLanguage = langdetect.detect( sentence ) 
+                result.append( sentenceData )
+        return result 
+    
+    def _countLanguageSentences(self, paragraphsAnalized ):
+        scannedLang = 0
+        for paragraphAnalized in paragraphsAnalized : 
+            if paragraphAnalized.detectedLanguage == 'es' : 
+                scannedLang = scannedLang + 1
+        return scannedLang
+           
     def _saveUrlList(self, urlBase, urlList ):
         for url in urlList : 
             if not self._isOnlyFragment( url ) :
@@ -105,14 +133,12 @@ class Worker(Thread):
         return urljoin( urlBase, 
                              url )
     
-    def _saveParagraphs(self, url, paragraphList ):
-        for paragraph in paragraphList : 
-            sentenceList = sentences.splitParagraph( paragraph )
-            for sentence in sentenceList: 
-                wordList = sentences.splitInWords( sentence )
-                if (len( wordList ) >= self.minimumWordsPerSentence 
-                and langdetect.detect( sentence ) == 'es' ):
-                    self.sentenceProcessor.addSentence( url, sentence, wordList )
+    def _saveParagraphs(self, url, paragraphsAnalized ):
+        for paragraphAnalized in paragraphsAnalized :
+            if paragraphAnalized.detectedLanguage == 'es' :
+                self.sentenceProcessor.addSentence( url, 
+                                                    paragraphAnalized.sentence, 
+                                                    paragraphAnalized.wordList )
 
     def _isNavigableString(self, tag):
         return isinstance(tag, NavigableString )

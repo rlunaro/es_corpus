@@ -14,10 +14,6 @@ from sentenceProcessor import SentenceProcessorCouch
 from urlProcessor import UrlProcessorCouch
 from webSiteInfoProvider import WebSiteInfoProvider
 
-def get_urls_to_visit( db : couchdb.Database ):
-    return ["https://es.wikipedia.org"]
-    #return [x for x in db.iterview("urls/not_visited") ]
-
 def getUrlList( node ):
     urls_to_visit = []
     node_list = node.find_all( 'a' )
@@ -40,8 +36,6 @@ if __name__ == '__main__':
     setupLogger( logging_file )
     server = getServer( local_config )
     db = server[local_config["db"]["db"]]
-    # for debug: set all url's as "not visited"
-    set_urls_as_not_visited(db, "urls/visited" )
     sp = SentenceProcessorCouch( db )
     up = UrlProcessorCouch( db )
     webSiteInfoProvider = WebSiteInfoProvider( local_config['user_agent'], 

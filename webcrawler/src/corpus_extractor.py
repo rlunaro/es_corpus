@@ -12,8 +12,35 @@ import json
 from common import parseArguments, setupLogger, readConfig, getServer, getDatabaseConnection
 
 WORDS_TXT = 'words.txt'
+WORDS_TXT_HEADER = f'''# {WORDS_TXT}
+# 
+# Format of this file:
+# - everything that starts with "#" is a comment (like this one)
+# - the encoding of this file is UTF-8
+# - every word is in a single line 
+#
+'''
 DISCARDED_WORDS_TXT = 'discarded_words.txt'
+DISCARDED_WORDS_TXT_HEADER = f'''# {DISCARDED_WORDS_TXT}
+# 
+# Format of this file:
+# - everything that starts with "#" is a comment (like this one)
+# - the encoding of this file is UTF-8
+# - every word is in a single line 
+#
+'''
 CORPUS_TXT = 'corpus.txt'
+CORPUS_TXT_HEADER = f'''# {CORPUS_TXT}
+#
+# Format of this file: 
+# - everything that starts with "#" is a comment (like this one)
+# - the encoding of this file is UTF-8
+# - there is a JSON object PER LINE: this is done because it is 
+#   too complex to read a entire, single json object. Instead, read 
+#   many little json multiple times is easy
+#
+'''
+
 
 def getMinimumSentenceThreshold( db : couchdb.Database, sentences_length_view : str, threshold : int ):
     availableLengths = [ x.key for x in db.iterview( sentences_length_view, 2000000, group_level = 1 ) ]
@@ -31,6 +58,9 @@ def processEntries( db : couchdb.Database, corpus_result_dir : str, sentenceThre
     with open( words_path, "wt", encoding = "utf-8" ) as words: 
         with open( corpus_path, "wt", encoding = "utf-8" ) as corpus : 
             with open( discarded_words_path, "wt", encoding = "utf-8" ) as discarded :
+                words.write( WORDS_TXT_HEADER )
+                corpus.write( CORPUS_TXT_HEADER )
+                discarded.write( DISCARDED_WORDS_TXT_HEADER )
                 for row in db.iterview( 'all_words/all_words', 100 ) :
                     if len( row.value['sentences'] ) >= sentenceThreshold : 
                         words.write( f"{row.value['_id']}\n" )
@@ -63,8 +93,11 @@ if __name__ == '__main__':
     localConfig = readConfig( localConfigFile )
     server = getServer( localConfig )
     db = getDatabaseConnection( server, localConfig['db']['db'] )
-    sentenceThreshold = getMinimumSentenceThreshold( db, 'all_words/sentences_length', threshold=95 )
-    logging.info( f"Processing word entries that have at least {sentenceThreshold}, the discarded words would be put into {DISCARDED_WORDS_TXT}")
+    if 'sentence_threshold' in localConfig : 
+        sentenceThreshold = localConfig['sentence_threshold']
+    else :
+        sentenceThreshold = getMinimumSentenceThreshold( db, 'all_words/sentences_length', threshold=95 )
+    logging.info( f"Processing word entries that have at least {sentenceThreshold} sentences, the discarded words would be put into {DISCARDED_WORDS_TXT}")
     processEntries( db, localConfig['corpus_result_dir'], sentenceThreshold )
     print("Finished")
     logging.info( "finished" )
