@@ -13,6 +13,7 @@ from engine import Engine
 from sentenceProcessor import SentenceProcessorCouch
 from urlProcessor import UrlProcessorCouch
 from webSiteInfoProvider import WebSiteInfoProvider
+from exclusion_rules import ExclusionRules
 
 def getUrlList( node ):
     urls_to_visit = []
@@ -38,6 +39,7 @@ if __name__ == '__main__':
     db = server[local_config["db"]["db"]]
     sp = SentenceProcessorCouch( db )
     up = UrlProcessorCouch( db )
+    exclusions = ExclusionRules( config_file['exclusion_rules'] )
     webSiteInfoProvider = WebSiteInfoProvider( local_config['user_agent'], 
                                        max_wait_time_secs=10,
                                        default_crawl_delay=5 )
@@ -47,7 +49,8 @@ if __name__ == '__main__':
                      UrlsProviderReal(db, "urls/not_visited"), 
                      sp, 
                      up, 
-                     webSiteInfoProvider )
+                     webSiteInfoProvider, 
+                     exclusions )
     engine.start()
     print("finished")
 
